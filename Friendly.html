@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Friendly</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--pk:#FF3D82;--pk2:#FF7AA8;--bg:#fff;--tx:#0B0B10;--tx2:#7A7480;--gl:rgba(255,255,255,.62);--gb:rgba(10,10,20,.07);--sh:0 10px 30px rgba(255,61,130,.14);--ink:#0B0B10;--f:clamp(.82rem,.78rem + .2vw,.95rem);--h:clamp(1.25rem,1.05rem + 1vw,1.7rem);box-sizing:border-box}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--tx:#fff;--tx2:#A29BA8;--gl:rgba(255,255,255,.07);--gb:rgba(255,255,255,.12);--sh:0 10px 30px rgba(0,0,0,.6);--ink:#fff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#000;--tx:#fff;--tx2:#A29BA8;--gl:rgba(255,255,255,.07);--gb:rgba(255,255,255,.12);--sh:0 10px 30px rgba(0,0,0,.6);--ink:#fff;color-scheme:dark}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{background:var(--bg);color:var(--tx);font:400 var(--f)/1.45 Manrope,Inter,system-ui,sans-serif;overflow-x:hidden;transition:background .3s,color .3s}
+body{padding-top:env(safe-area-inset-top,0px)}
+body::before,body::after{content:"";position:fixed;z-index:0;border-radius:50%;filter:blur(70px);opacity:.45;pointer-events:none}
+body::before{width:60vmax;height:60vmax;max-width:420px;max-height:420px;background:var(--pk);top:-120px;right:-140px}
+body::after{width:50vmax;height:50vmax;max-width:380px;max-height:380px;background:#ff9bc0;bottom:60px;left:-160px;opacity:.3}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--pk);outline-offset:2px}
+body.rm *{transition:none!important;animation:none!important}
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}.ic.sm{width:16px;height:16px}.ic.lg{width:30px;height:30px}
+.main{position:relative;z-index:1;max-width:560px;margin:0 auto;padding:0 16px calc(120px + env(safe-area-inset-bottom,0px))}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:8px;padding:12px 0}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:1.2rem;letter-spacing:-.02em}
+.grow{flex:1;min-width:0}.sub{color:var(--tx2);font-size:.82em}
+.glass{background:var(--gl);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:1px solid var(--gb)}
+.ib{position:relative;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;transition:transform .15s}.ib:active{transform:scale(.9)}
+.bdg{position:absolute;top:-3px;right:-3px;background:var(--pk);color:#fff;border-radius:9px;font-size:.62rem;font-weight:800;min-width:17px;height:17px;display:grid;place-items:center;padding:0 4px;box-shadow:0 0 0 2px var(--bg)}
+nav.fl{position:fixed;z-index:30;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));width:min(calc(100% - 28px),420px);display:flex;justify-content:space-around;align-items:center;padding:8px 6px;border-radius:30px;box-shadow:0 16px 40px rgba(0,0,0,.18)}
+.nv{flex:1;position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:50px;justify-content:center;font-size:.64rem;font-weight:700;color:var(--tx2);border-radius:20px;transition:color .25s}
+.nv.on{color:var(--pk)}.nv.on::before{content:"";position:absolute;inset:2px 6px;border-radius:18px;background:rgba(255,61,130,.13);animation:pop .3s}
+.nv .ic{position:relative;transition:transform .25s}.nv.on .ic{transform:translateY(-1px) scale(1.1)}.nv span{position:relative}
+.nv.cr .ic{width:48px;height:48px;padding:13px;margin-top:-26px;border-radius:50%;background:linear-gradient(135deg,var(--pk),var(--pk2));color:#fff;box-shadow:0 10px 24px rgba(255,61,130,.5);stroke-width:2.6}
+.nv.cr::before{display:none}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
+@keyframes rise{from{opacity:0;transform:translateY(18px) scale(.98)}}
+.rise{animation:rise .5s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--i,0)*60ms)}
+.card:hover{transform:translateY(-3px)}
+.nt{position:relative;display:flex;gap:12px;align-items:center;padding:12px;border-radius:22px;margin-bottom:10px;max-height:220px;transition:transform .35s,opacity .3s,max-height .35s,margin .35s,padding .35s}
+.nt:active{transform:scale(.985)}
+.nt.un{background:rgba(255,61,130,.1);border-color:rgba(255,61,130,.35)}
+.nt.out{transform:translateX(-110%);opacity:0;max-height:0;margin:0;padding:0;border-width:0}
+.nt .ud{width:9px;height:9px;border-radius:50%;background:var(--pk);flex:none;box-shadow:0 0 0 3px rgba(255,61,130,.2)}
+.nt .ico{position:absolute;right:-4px;bottom:-2px;width:22px;height:22px;border-radius:50%;background:var(--pk);color:#fff;display:grid;place-items:center;border:2px solid var(--bg)}
+.nt .ico .ic{width:11px;height:11px;stroke-width:3}
+.sec-h{font-weight:800;font-size:1rem;margin:18px 2px 10px}
+.reels{height:calc(100svh - 340px);min-height:400px;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;border-radius:3px;overscroll-behavior:contain;box-shadow:var(--sh)}
+.reels::-webkit-scrollbar{display:none}
+.reel{position:relative;height:100%;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:flex-end;padding:16px 74px 16px 16px;color:#fff;overflow:hidden;border-radius:3px}
+.reel::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.85),transparent 60%);pointer-events:none}
+.reel>*{position:relative;z-index:1}
+.reel .bgi{position:absolute;left:50%;top:12%;width:70%;height:46%;transform:translateX(-50%);opacity:.18;stroke-width:.7;animation:flt 5s ease-in-out infinite;z-index:0}
+@keyframes flt{50%{transform:translateX(-50%) translateY(-12px) scale(1.05)}}
+.reel .tp{position:absolute;top:14px;left:14px;right:14px;display:flex;justify-content:space-between;z-index:2}
+.reel .rail{position:absolute;right:10px;bottom:16px;display:flex;flex-direction:column;gap:14px;align-items:center;z-index:3}
+.reel .rail button{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.68rem;font-weight:700}
+.reel .rail .ic{width:46px;height:46px;padding:12px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.3);transition:transform .2s,background .2s}
+.reel .rail button:active .ic{transform:scale(.8)}
+.reel .rail .lk .ic{background:var(--pk);border-color:var(--pk);animation:pop .3s}
+.reel .tx>*{opacity:0;transform:translateY(18px);transition:opacity .5s,transform .5s cubic-bezier(.2,.8,.2,1)}
+.reel.in .tx>*{opacity:1;transform:none}
+.reel .tx>*:nth-child(2){transition-delay:.08s}.reel .tx>*:nth-child(3){transition-delay:.16s}.reel .tx>*:nth-child(4){transition-delay:.24s}.reel .tx>*:nth-child(5){transition-delay:.32s}
+.rs{display:flex;align-items:baseline;gap:6px;font-size:2.1rem;font-weight:800;letter-spacing:-.03em}
+.chatpage{position:fixed;inset:0;z-index:45;background:var(--bg);display:flex;flex-direction:column;max-width:560px;margin:0 auto;animation:slidein .3s cubic-bezier(.2,.9,.2,1)}
+@keyframes slidein{from{transform:translateX(30%);opacity:0}}
+.ch-h{display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top,0px)) 12px 10px;border-width:0 0 1px}
+.ch-b{flex:1;overflow-y:auto;padding:16px 14px;display:flex;flex-direction:column;gap:6px}
+.ch-i{display:flex;align-items:center;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--gb)}
+.ch-i input[type=text]{border-radius:99px;flex:1;min-width:0}
+.pcard{text-align:center;padding:20px 10px 24px;margin-bottom:10px}
+.mr{display:flex;align-items:flex-end;gap:8px}.mr.r{justify-content:flex-end}
+.mb{max-width:76%;padding:10px 14px;border-radius:20px;background:var(--gl);border:1px solid var(--gb);overflow-wrap:anywhere;animation:pop .25s}
+.mr.r .mb{background:linear-gradient(110deg,var(--pk),var(--pk2));color:#fff;border-color:transparent;border-bottom-right-radius:6px}.mr:not(.r) .mb{border-bottom-left-radius:6px}
+.mb img{display:block;max-width:100%;border-radius:12px}.mb small{display:block;font-size:.62rem;opacity:.65;margin-top:2px;text-align:right}
+.ty i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--tx2);margin:0 2px;animation:bn 1s infinite}.ty i:nth-child(2){animation-delay:.15s}.ty i:nth-child(3){animation-delay:.3s}
+@keyframes bn{50%{transform:translateY(-5px)}}
+.seen{text-align:right;font-size:.66rem;color:var(--tx2)}
+.itabs{display:flex;border-bottom:1px solid var(--gb);margin:4px -16px 14px}
+.it{flex:1;height:50px;display:grid;place-items:center;color:var(--tx2);position:relative;transition:color .2s}.it.on{color:var(--pk)}.it .ic{width:24px;height:24px}
+.it.on::after{content:"";position:absolute;left:22%;right:22%;bottom:-1px;height:3px;background:var(--pk);border-radius:3px;animation:pop .25s}
+.gd{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.tl{aspect-ratio:1;position:relative;color:#fff;display:grid;place-items:center;border-radius:3px;overflow:hidden;border:1px solid var(--gb);animation:rise .4s backwards}
+.tl img{width:100%;height:100%;object-fit:cover}.tl span{position:absolute;bottom:6px;left:6px;right:6px;font-size:.66rem;font-weight:800;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ir{display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--gb)}.ir:last-child{border:0}.ir .ic{color:var(--pk)}
+*{scrollbar-width:none;-ms-overflow-style:none}*::-webkit-scrollbar{display:none;width:0;height:0}
+.rv{position:fixed;inset:0;z-index:46;background:#000;max-width:560px;margin:0 auto;animation:slidein .3s cubic-bezier(.2,.9,.2,1)}
+.rv .reels{height:100%;min-height:0;box-shadow:none;border-radius:0}.rv .reel{border-radius:0;padding-bottom:calc(22px + env(safe-area-inset-bottom,0px))}
+.rv .rail{bottom:calc(22px + env(safe-area-inset-bottom,0px))}.rv .reel .tp{top:calc(14px + env(safe-area-inset-top,0px));left:66px}
+#rx{position:absolute;z-index:6;top:calc(10px + env(safe-area-inset-top,0px));left:12px;color:#fff;background:rgba(255,255,255,.18)}
+.card,.nt,.photo,.pc,.map,.wal,.cover,.cat button,.srch,.demo{border-radius:3px!important}
+:root[data-theme="light"] body::before,:root[data-theme="light"] body::after{display:none}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]) body::before,:root:not([data-theme="dark"]) body::after{display:none}}
+:root[data-theme="light"]{--gl:#fff;--gb:rgba(10,10,20,.1);--sh:0 2px 10px rgba(10,10,20,.07)}
+@media(prefers-color-scheme:light){:root:not([data-theme="dark"]){--gl:#fff;--gb:rgba(10,10,20,.1);--sh:0 2px 10px rgba(10,10,20,.07)}}
+.srch{display:flex;align-items:center;gap:10px;border-radius:99px;padding:0 16px;height:48px;margin-bottom:12px;color:var(--tx2);width:100%;text-align:left;font-weight:600}
+.card{border-radius:24px;padding:14px;margin-bottom:14px;box-shadow:var(--sh);transition:transform .2s}.card:active{transform:scale(.99)}
+h2{font-size:var(--h);font-weight:800;letter-spacing:-.02em;margin:6px 0 12px}h3{font-size:1.05rem;font-weight:800}
+.row{display:flex;align-items:center;gap:10px}.wrap{flex-wrap:wrap}.mt{margin-top:12px}.center{text-align:center}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:inline-flex;align-items:center;gap:6px;padding:0 16px;height:38px;border-radius:99px;font-weight:700;transition:all .2s}
+.chip.on{background:var(--ink);color:var(--bg);border-color:transparent}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:99px;background:rgba(255,61,130,.12);color:var(--pk);font-size:.72rem;font-weight:800}
+.av{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;position:relative;box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}
+.av.lg{width:96px;height:96px;font-size:2rem}.av.ring{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--pk)}
+.dot{position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;background:#22c55e;border:2px solid var(--bg)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 22px;border-radius:99px;font-weight:800;background:linear-gradient(110deg,var(--pk),var(--pk2));color:#fff;box-shadow:0 8px 20px rgba(255,61,130,.35);transition:transform .15s,opacity .2s}
+.btn:active{transform:scale(.95)}.btn.sec{background:var(--gl);color:var(--tx);box-shadow:none;border:1px solid var(--gb)}.btn.dk{background:var(--ink);color:var(--bg);box-shadow:none}.btn.sm{height:38px;padding:0 14px}.btn[disabled]{opacity:.5;box-shadow:none}.btn.bad{background:#e5484d}
+.acts{display:flex;gap:8px;flex-wrap:wrap}.acts .btn{flex:1 1 auto}
+.photo{position:relative;border-radius:20px;overflow:hidden;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:14px;min-height:clamp(200px,52vw,280px)}
+.photo>.ic.bgi{position:absolute;right:-10px;top:10px;width:70%;height:70%;opacity:.16;stroke-width:1}
+.photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7),transparent 60%)}
+.photo>*{position:relative;z-index:1}.photo .tp{position:absolute;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;z-index:2}
+.tag{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:99px;background:rgba(255,255,255,.2);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);font-size:.72rem;font-weight:700;border:1px solid rgba(255,255,255,.3)}
+.meta{display:flex;gap:14px;flex-wrap:wrap;color:var(--tx2);font-size:.8rem}.meta span{display:inline-flex;align-items:center;gap:5px}
+.demo{display:flex;gap:8px;align-items:center;border-radius:16px;padding:8px 12px;font-size:.76rem;margin-bottom:10px;color:var(--tx2)}
+.tog{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--gb)}.tog:last-child{border:0}
+.sw{flex:none;width:52px;height:32px;border-radius:99px;background:var(--gb);position:relative;transition:background .25s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;transition:transform .25s cubic-bezier(.3,1.5,.5,1);box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.sw[aria-checked=true]{background:var(--pk)}.sw[aria-checked=true]::after{transform:translateX(20px)}
+input,textarea,select{width:100%;min-height:48px;border-radius:16px;border:1px solid var(--gb);background:var(--gl);color:var(--tx);padding:11px 14px;font:inherit}
+label{display:block;font-weight:700;margin:14px 0 6px}.err{color:#e5484d;font-size:.78rem;margin-top:6px}
+.map{position:relative;height:clamp(300px,70vw,400px);border-radius:28px;overflow:hidden;margin-bottom:12px;background:#15111a;box-shadow:var(--sh)}
+.map::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(255,61,130,.25),transparent 60%),linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);background-size:100% 100%,40px 40px,40px 40px}
+.me{position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px;border-radius:50%;background:var(--pk);z-index:2}
+.me::before,.me::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--pk);animation:pulse 2.4s infinite}.me::after{animation-delay:1.2s}
+@keyframes pulse{to{transform:scale(7);opacity:0}}
+.mk{position:absolute;transform:translate(-50%,-50%);transition:transform .25s;z-index:3;animation:pop .4s both}.mk.sel{transform:translate(-50%,-50%) scale(1.3);z-index:4}.mk .av{width:44px;height:44px;border:3px solid #fff;box-shadow:0 6px 16px rgba(0,0,0,.4)}
+.pc{position:relative;border-radius:30px;overflow:hidden;box-shadow:var(--sh);touch-action:pan-y;user-select:none;transition:transform .3s,opacity .3s}
+.pc .ph{height:clamp(340px,95vw,460px);display:flex;flex-direction:column;justify-content:flex-end;padding:16px;color:#fff;position:relative}
+.pc .ph .ic.bgi{position:absolute;left:50%;top:14%;width:62%;height:62%;transform:translateX(-50%);opacity:.18;stroke-width:.8}
+.pc .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.78) 8%,transparent 60%)}.pc .ph>*{position:relative;z-index:1}
+.rnd{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;box-shadow:var(--sh)}.rnd.p{background:linear-gradient(135deg,var(--pk),var(--pk2));color:#fff}
+.sheetbg{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center;animation:fade .2s}
+.sheet{background:var(--bg);width:100%;max-width:520px;max-height:86vh;overflow:auto;border-radius:30px 30px 0 0;padding:10px 18px calc(18px + env(safe-area-inset-bottom,0px));animation:up .35s cubic-bezier(.2,.9,.2,1);border:1px solid var(--gb)}
+.sheet::before{content:"";display:block;width:40px;height:5px;border-radius:9px;background:var(--gb);margin:0 auto 14px}
+@keyframes up{from{transform:translateY(70%)}}@keyframes fade{from{opacity:0}}
+.toast{position:fixed;left:50%;bottom:calc(104px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:99px;z-index:60;font-weight:700;max-width:90%;display:flex;gap:8px;align-items:center;animation:rise .3s}
+.prog{height:6px;background:var(--gb);border-radius:9px;margin:8px 0 16px;overflow:hidden}.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--pk),var(--pk2));border-radius:9px;transition:width .35s}
+.cat{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.cat button{border-radius:20px;padding:16px 6px;font-weight:700;font-size:.74rem;display:flex;flex-direction:column;align-items:center;gap:8px;min-height:92px;transition:all .2s;text-align:center}
+.cat button.on{background:var(--pk);color:#fff;border-color:var(--pk);transform:scale(1.04)}
+.wal{position:relative;overflow:hidden;border-radius:28px;padding:20px;color:#fff;background:linear-gradient(135deg,#0B0B10,#3a0f26 60%,var(--pk));box-shadow:var(--sh);margin-bottom:14px}
+.wal::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);animation:shine 4s infinite}
+@keyframes shine{to{left:130%}}.wal b{font-size:2.3rem;letter-spacing:-.03em;display:block}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}.stats b{display:block;font-size:1.15rem}
+.stories{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 12px;scrollbar-width:none}.stories::-webkit-scrollbar{display:none}
+.st{flex:none;text-align:center;width:62px}.st .av{width:58px;height:58px;margin:0 auto 4px}
+.cover{height:130px;border-radius:28px;background:linear-gradient(135deg,#0B0B10,var(--pk));margin-bottom:-48px;position:relative;overflow:hidden}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></symbol>
+<symbol id="i-radar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 12l6-6"/></symbol>
+<symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3 3 0 0 0-5 1.5c0 3 5 1.5 5 4.5a3 3 0 0 1-5 1.5M12 6v2M12 16v2"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2 .7 4 2.3 4 6"/></symbol>
+<symbol id="i-mark" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M5 13v7h14v-7"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+<symbol id="i-left" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+<symbol id="i-right" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+<symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13M12 8S10 3 7.5 4.5 9 8 12 8zM12 8s2-5 4.5-3.5S15 8 12 8z"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10z"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M2 14L22 4l-8 18-3-8z"/></symbol>
+<symbol id="i-map" viewBox="0 0 24 24"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
+<symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 4v16M16 4v16M3 12h18"/></symbol>
+<symbol id="i-food" viewBox="0 0 24 24"><path d="M7 3v8M4 3v5a3 3 0 0 0 6 0V3M7 11v10M17 21V3c-3 1-4 4-4 8h4"/></symbol>
+<symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4h8v6a4 4 0 0 1-8 0zM8 6H4v1a3 3 0 0 0 4 3M16 6h4v1a3 3 0 0 1-4 3M12 14v4M8 21h8"/></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+<symbol id="i-cam" viewBox="0 0 24 24"><path d="M3 8h4l2-3h6l2 3h4v12H3z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+<symbol id="i-art" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 1.5-2s0-2 1.5-2h2a4 4 0 0 0 4-4c0-5-4-10-9-10z"/></symbol>
+<symbol id="i-book" viewBox="0 0 24 24"><path d="M4 4h7a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4zM20 4h-7v16h7z"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2 4.5 4.5 0 0 1 8 2c0 6-8 11-8 11z"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8v.5"/></symbol>
+<symbol id="i-img" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></symbol>
+<symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></symbol>
+<symbol id="i-logo" viewBox="0 0 32 32"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF3D82"/><stop offset="1" stop-color="#FF9BC0"/></linearGradient></defs><rect width="32" height="32" rx="10" fill="url(#lg)" stroke="none"/><circle cx="12.5" cy="16" r="6" fill="none" stroke="#fff" stroke-width="2.4"/><circle cx="19.5" cy="16" r="6" fill="none" stroke="#fff" stroke-width="2.4" opacity=".75"/></symbol>
+</defs></svg>
+<main class="main">
+ <header class="top"><div class="logo grow"><svg class="ic" style="width:32px;height:32px" aria-hidden="true"><use href="#i-logo"/></svg><div>friendly<div class="sub" id="greet" style="font-weight:600;letter-spacing:0;font-size:.7rem"></div></div></div>
+  <button class="ib glass" id="tg" aria-label="Switch day or night mode" onclick="toggleTheme()"></button>
+  <button class="ib glass" aria-label="Notifications" onclick="location.hash='notifications'"><svg class="ic"><use href="#i-bell"/></svg><span class="bdg" id="nb" style="display:none">0</span></button>
+  <button class="ib glass" aria-label="Messages" onclick="msgs()"><svg class="ic"><use href="#i-chat"/></svg><span class="bdg">2</span></button></header>
+ <div class="demo glass"><svg class="ic sm" style="color:var(--pk)"><use href="#i-info"/></svg>Demo mode: sample people, posts and coins. Not real data or money.</div>
+ <div id="view" aria-live="polite"></div>
+</main>
+<nav class="fl glass" id="bot" aria-label="Primary"></nav>
+<div id="ov"></div>
+<script>
+const $=s=>document.querySelector(s);
+const I=(n,c='')=>`<svg class="ic ${c}" aria-hidden="true"><use href="#i-${n}"/></svg>`;
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const S={theme:store.get('theme','system'),rm:store.get('rm',false),priv:store.get('priv',{online:true,radar:true,req:true,dist:false,read:true}),saved:{},int:{},req:{},radius:5,view:'map',idx:0,filter:'For You',sel:null,cat:null,step:0,tab:'About',errs:{},draft:{title:'',desc:'',date:'',time:'',loc:'',ppl:2,reward:''}};
+const people=[
+ {id:1,n:'Aanya Rao',u:'aanya.r',km:1.2,on:1,bio:'Weekend trekker and filter coffee fan.',int:['Hiking','Photography','Coffee'],x:30,y:28,loc:'Banjara Hills'},
+ {id:2,n:'Kabir Shah',u:'kabir.s',km:3.4,on:0,bio:'Looking for badminton partners.',int:['Sports','Movies','Food'],x:70,y:34,loc:'Gachibowli'},
+ {id:3,n:'Meera Nair',u:'meera.n',km:4.8,on:1,bio:'Study groups, books and board games.',int:['Books','Study','Games'],x:38,y:74,loc:'Madhapur'},
+ {id:4,n:'Rohan Das',u:'rohan.d',km:9.1,on:0,bio:'Road trips and live music.',int:['Travel','Concerts'],x:78,y:68,loc:'Secunderabad'},
+ {id:5,n:'Sara Khan',u:'sara.k',km:18,on:1,bio:'Foodie exploring new cafes.',int:['Food','Coffee','Movies'],x:16,y:62,loc:'Kondapur'},
+ {id:6,n:'Dev Patel',u:'dev.p',km:32,on:0,bio:'Cricket on Sundays.',int:['Sports','Games'],x:58,y:12,loc:'Uppal'}];
+const cats=[['Outing Partner','pin'],['Travel Partner','send'],['Movie Companion','film'],['Food and Restaurant','food'],['Sports and Games','trophy'],['Events and Concerts','mic'],['Photography','cam'],['Hobbies','art'],['Group Activities','users'],['Study Partner','book'],['Gifts and Prizes','gift'],['Custom Activity','spark']];
+const ci=n=>(cats.find(c=>c[0]===n)||[0,'spark'])[1];
+let posts=[
+ {id:1,p:people[0],cat:'Travel Partner',t:'Weekend trek to Ananthagiri',d:'Easy 8 km trail, leaving Saturday 6 AM. Two spots left.',loc:'Vikarabad',when:'Sat, 6:00 AM',ppl:2,rew:'',tm:'2h',tag:['Nearby','Latest','For You','Following'],ic:14},
+ {id:2,p:people[1],cat:'Sports and Games',t:'Badminton doubles tonight',d:'Casual games, all levels welcome. Courts booked.',loc:'Gachibowli',when:'Today, 7:30 PM',ppl:3,rew:'Prize: free shuttles',tm:'4h',tag:['Nearby','For You','Latest'],ic:9},
+ {id:3,p:people[2],cat:'Study Partner',t:'Weekend study circle',d:'Quiet cafe session. Bring your laptop.',loc:'Madhapur',when:'Sun, 11:00 AM',ppl:4,rew:'',tm:'1d',tag:['For You','Following'],ic:6},
+ {id:4,p:people[3],cat:'Events and Concerts',t:'Open mic night meetup',d:'Heading to the community open mic. Join the group.',loc:'Jubilee Hills',when:'Fri, 8:00 PM',ppl:5,rew:'Gift: event wristband',tm:'1d',tag:['Latest','For You'],ic:21}];
+const camps=[{id:1,s:'Brew & Co',i:'food',t:'Try the new cafe menu',d:'Visit and post a review.',c:50,st:'Available',req:'Visit and verified review'},{id:2,s:'FitNest',i:'trophy',t:'Join a group workout',d:'Attend one community session.',c:120,st:'Verification Pending',req:'Check-in verified by organiser'},{id:3,s:'BookBarn',i:'book',t:'Reading challenge',d:'Share your weekly reading list.',c:30,st:'Completed',req:'Submit list'}];
+const ini=n=>n.split(' ').map(w=>w[0]).join('').slice(0,2);
+const grad=id=>`background:linear-gradient(145deg,hsl(${[340,330,350,320,345,335][id%6]} 90% ${55+id%3*6}%),hsl(${[300,280,10,290,20,310][id%6]} 60% 22%))`;
+const av=(p,c='')=>`<div class="av ${c}" style="${grad(p.id)}" aria-hidden="true">${ini(p.n)}${p.on&&S.priv.online?'<i class="dot"></i>':''}</div>`;
+const me={id:100,n:'Priya Sharma',u:'priya.s',on:1};
+function toast(m){const t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.innerHTML=I('check','sm')+m;document.body.append(t);setTimeout(()=>t.remove(),2200)}
+function applyTheme(){const r=document.documentElement;S.theme==='system'?r.removeAttribute('data-theme'):r.setAttribute('data-theme',S.theme);document.body.classList.toggle('rm',S.rm)}
+function sheet(h){$('#ov').innerHTML=`<div class="sheetbg" onclick="if(event.target===this)closeS()"><div class="sheet" role="dialog" aria-modal="true">${h}</div></div>`;const b=$('.sheet button,.sheet input');b&&b.focus()}
+const closeS=()=>$('#ov').innerHTML='';
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeS()});
+const tabs=[['home','home','Home'],['radar','radar','Radar'],['create','plus','Create'],['earn','coin','Earn'],['profile','user','Profile']];
+const route=()=>{const h=location.hash.slice(1);return h==='notifications'||h==='messages'||h==='wallet'||tabs.some(t=>t[0]===h)?h:'home'};
+function render(){const r=route();$('#bot').innerHTML=tabs.map(t=>`<button class="nv ${t[0]==='create'?'cr':''} ${r===t[0]?'on':''}" aria-label="${t[2]}" ${r===t[0]?'aria-current="page"':''} onclick="location.hash='${t[0]}'">${I(t[1])}<span>${t[2]}</span></button>`).join('');
+ $('#greet').textContent=r==='home'?'Hi Priya, find your people':r==='notifications'?'Activity':r==='messages'?'Inbox':r==='wallet'?'Wallet':tabs.find(t=>t[0]===r)[2];$('#view').innerHTML=({home,radar,earn,create,profile,notifications:notifPage,messages:messagesPage,wallet:walletPage})[r]();upBadge();$('#tg').innerHTML=I(isDark()?'sun':'moon');$('#tg').setAttribute('aria-label',isDark()?'Switch to day mode':'Switch to night mode');bindSwipe()}
+addEventListener('hashchange',()=>{render();scrollTo(0,0)});
+const stg=i=>`rise" style="--i:${i}`;
+// HOME
+function home(){const L=posts.filter(p=>p.tag.includes(S.filter));
+ return `<button class="srch glass" onclick="srch()">${I('search','sm')}Search people, activities, places</button><div class="stories">${people.map(p=>`<button class="st" onclick="prof(${p.id})" aria-label="${p.n}">${av(p,'ring')}<div class="sub" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.n.split(' ')[0]}</div></button>`).join('')}</div>
+ <div class="chips" role="tablist">${['For You','Nearby','Following','Latest'].map(f=>`<button class="chip glass ${S.filter===f?'on':''}" role="tab" aria-selected="${S.filter===f}" onclick="S.filter='${f}';render()">${f}</button>`).join('')}</div>`
+ +(L.length?L.map((p,i)=>feed(p,i)).join(''):`<div class="card glass center">${I('spark','lg')}<h3 class="mt">Nothing here yet</h3><p class="sub">Try another filter or create an activity.</p></div>`)}
+function feed(p,i){const a=S.int[p.id],s=S.saved[p.id];return `<article class="card glass ${stg(i)}"><div class="row" style="margin-bottom:10px"><button class="row grow" style="text-align:left;min-width:0" onclick="prof(${p.p.id})">${av(p.p)}<div style="min-width:0"><b>${p.p.n}</b><div class="sub">@${p.p.u} · ${p.tm} ago</div></div></button><button class="ib" aria-label="More options" onclick="more(${p.id})">${I('more')}</button></div>
+ <div class="photo" style="${grad(p.id+2)}">${I(ci(p.cat),'bgi')}<div class="tp"><span class="tag">${I(ci(p.cat),'sm')}${p.cat}</span>${p.rew?`<span class="tag">${I('gift','sm')}Reward</span>`:''}</div><h3 style="font-size:1.25rem">${p.t}</h3><div class="sub" style="color:#fff;opacity:.85">${p.d}</div></div>
+ <div class="meta mt"><span>${I('pin','sm')}${p.loc}</span><span>${I('cal','sm')}${p.when}</span><span>${I('users','sm')}${p.ppl} needed</span></div>${p.rew?`<div class="mt"><span class="pill">${I('gift','sm')}${p.rew}</span></div>`:''}
+ <div class="acts mt"><button class="btn sm ${a?'':'dk'}" onclick="S.int[${p.id}]=!S.int[${p.id}];render()">${I(a?'check':'heart','sm')}${a?'Interested':p.ic+' Interested'}</button><button class="btn sm" onclick="S.req['j${p.id}']?toast('Request already sent'):(S.req['j${p.id}']=1,toast('Join request sent'))">Request to Join</button>
+ <button class="btn sm sec" style="flex:none;padding:0 12px" aria-label="${s?'Unsave':'Save'}" onclick="S.saved[${p.id}]=!S.saved[${p.id}];toast(S.saved[${p.id}]?'Saved':'Removed');render()">${I('mark','sm')}</button><button class="btn sm sec" style="flex:none;padding:0 12px" aria-label="Share" onclick="share()">${I('share','sm')}</button></div></article>`}
+function share(){navigator.clipboard?navigator.clipboard.writeText(location.href).then(()=>toast('Link copied'),()=>toast('Could not copy')):toast('Copy not supported')}
+function more(id){sheet(`<h3>Post options</h3>${['Copy link','Hide post','Block user','Report'].map(o=>`<button class="btn sec mt" style="width:100%" onclick="mAct('${o}',${id})">${o}</button>`).join('')}`)}
+function mAct(o,id){closeS();if(o==='Hide post'){posts=posts.filter(p=>p.id!==id);render();toast('Post hidden')}else if(o==='Copy link')share();else if(o==='Report')report();else toast('User blocked')}
+function report(){sheet(`<h3>Report</h3><label for="rr">Reason</label><select id="rr">${['Spam','Harassment','Fake Profile','Inappropriate Content','Fraud','Safety Concern','Other'].map(x=>`<option>${x}</option>`).join('')}</select><label for="rd">Details</label><textarea id="rd" rows="3" maxlength="300"></textarea><div class="acts mt"><button class="btn sec" onclick="closeS()">Cancel</button><button class="btn" onclick="closeS();toast('Report submitted')">Submit</button></div>`)}
+// RADAR
+const sw=(k,fn)=>`<button class="sw" role="switch" aria-checked="${k==='rm'?S.rm:S.priv[k]}" aria-label="${k}" onclick="${fn}"></button>`;
+function radar(){const L=people.filter(p=>p.km<=S.radius),V=S.priv.radar;let b='';
+ if(!V)b+=`<div class="card glass center">${I('lock','lg')}<h3 class="mt">You are hidden</h3><p class="sub">New people cannot find you. Existing connections can still message you.</p></div>`;
+ if(!L.length)b+=`<div class="card glass center">${I('radar','lg')}<h3 class="mt">No one nearby</h3><p class="sub">Try a larger radius.</p></div>`;
+ else if(S.view==='map')b+=`<div class="map" role="region" aria-label="Map of nearby people (demo)"><div class="me"></div>${L.map(p=>`<button class="mk ${S.sel===p.id?'sel':''}" style="left:${p.x}%;top:${p.y}%" aria-label="${p.n}, about ${p.km} km away" onclick="S.sel=${p.id};sheetP(${p.id})">${av(p)}</button>`).join('')}</div>`;
+ else{const p=L[S.idx%L.length];b+=`<div class="pc" id="pc"><div class="ph" style="${grad(p.id)}">${I('user','bgi')}<div style="position:absolute;top:14px;left:14px;z-index:2;display:flex;gap:6px">${p.on&&S.priv.online?'<span class="tag"><i class="dot" style="position:static;border:0"></i>Online</span>':''}<span class="tag">${I('pin','sm')}${S.priv.dist?'Nearby':p.km+' km'}</span></div><h2 style="margin:0;color:#fff">${p.n}</h2><div style="opacity:.85">@${p.u} · ${p.loc}</div><p style="margin:6px 0 10px">${p.bio}</p><div class="row wrap">${p.int.map(i=>`<span class="tag">${i}</span>`).join('')}</div></div></div>
+ <div class="row mt" style="justify-content:center;gap:22px"><button class="rnd glass" aria-label="Previous" onclick="go(-1)">${I('left')}</button><button class="rnd glass" aria-label="View profile" onclick="prof(${p.id})">${I('user')}</button>${S.req[p.id]?`<button class="rnd glass" aria-label="Request sent" disabled>${I('check')}</button>`:`<button class="rnd p" aria-label="Send request" onclick="sendReq(${p.id})">${I('plus')}</button>`}<button class="rnd glass" aria-label="Next" onclick="go(1)">${I('right')}</button></div><div class="sub center mt">${S.idx%L.length+1} of ${L.length} · swipe or use arrows</div>`}
+ return `<h2>Discover People Around You</h2><div class="card glass row"><div class="grow"><b>Show me on Radar</b><div class="sub">${V?'You can appear to people nearby.':'You are hidden from new discovery.'}</div></div>${sw('radar',"S.priv.radar=!S.priv.radar;store.set('priv',S.priv);render()")}</div>
+ <div class="chips">${[1,5,10,25,50].map(k=>`<button class="chip glass ${S.radius===k?'on':''}" onclick="S.radius=${k};S.idx=0;render()">${k} km</button>`).join('')}</div>
+ <div class="chips">${[['map','map','Map'],['cards','grid','Cards']].map(v=>`<button class="chip glass ${S.view===v[0]?'on':''}" onclick="S.view='${v[0]}';render();bindSwipe()">${I(v[1],'sm')}${v[2]}</button>`).join('')}</div>${b}`}
+function go(d){const n=people.filter(p=>p.km<=S.radius).length;S.idx=(S.idx+d+n)%n;const c=$('#pc');if(c){c.style.transform=`translateX(${d>0?-40:40}px)`;c.style.opacity=0;setTimeout(render,180);setTimeout(bindSwipe,200)}else render()}
+function bindSwipe(){const c=$('#pc');if(!c)return;let x0=null;c.onpointerdown=e=>{x0=e.clientX};c.onpointermove=e=>{if(x0!==null)c.style.transform=`translateX(${e.clientX-x0}px) rotate(${(e.clientX-x0)/30}deg)`};c.onpointerup=e=>{if(x0===null)return;const d=e.clientX-x0;x0=null;Math.abs(d)>70?go(d<0?1:-1):c.style.transform=''}}
+function sendReq(id){S.req[id]='pending';toast('Request sent');render();bindSwipe();setTimeout(()=>{S.req[id]='connected';celebrate(id);render()},1800)}
+function celebrate(id){const p=people.find(x=>x.id===id);sheet(`<div class="center"><div class="row" style="justify-content:center;gap:0">${av(me,'lg')}<div style="margin:0 -14px;z-index:2;width:44px;height:44px;border-radius:50%;background:var(--pk);color:#fff;display:grid;place-items:center;box-shadow:0 0 0 4px var(--bg);animation:pop .5s both">${I('check')}</div>${av(p,'lg')}</div><h2 class="mt">You’re Connected!</h2><p class="sub">You and ${p.n} can now chat.</p><div class="acts mt"><button class="btn" onclick="closeS();msgs()">Send Message</button><button class="btn sec" onclick="closeS()">Keep Discovering</button></div></div>`)}
+function sheetP(id){const p=people.find(x=>x.id===id);render();sheet(`<div class="row">${av(p)}<div class="grow"><h3>${p.n}</h3><div class="sub">${S.priv.dist?'Nearby':'About '+p.km+' km away'}</div></div></div><p class="mt">${p.bio}</p><div class="row wrap mt">${p.int.map(i=>`<span class="pill">${i}</span>`).join('')}</div><div class="acts mt"><button class="btn sec" onclick="prof(${p.id})">Full Profile</button>${reqBtn(p.id)}</div>`)}
+function reqBtn(id){const s=S.req[id];return s==='pending'?`<button class="btn" disabled>Request Pending</button>`:s==='connected'?`<button class="btn" onclick="closeS();msgs()">Message</button>`:`<button class="btn" onclick="closeS();sendReq(${id})">Send Request</button>`}
+function prof(id){if(id===100){closeS();location.hash='profile';return}const p=people.find(x=>x.id===id);sheet(`<div class="cover"></div><div class="center">${av(p,'lg').replace('class="av lg"','class="av lg" style="margin:0 auto;border:4px solid var(--bg);'+grad(p.id)+'"')}<h2 class="mt">${p.n}</h2><div class="sub">@${p.u} · ${p.loc}</div><p class="mt">${p.bio}</p><div class="row wrap mt" style="justify-content:center">${p.int.map(i=>`<span class="pill">${i}</span>`).join('')}</div><div class="acts mt">${reqBtn(p.id)}<button class="btn sec" onclick="closeS()">Close</button></div></div>`)}
+// EARN
+function earn(){return `<div class="wal rise"><div style="opacity:.8">Available coins</div><b>245</b><div class="row mt" style="justify-content:space-between;font-size:.85rem;opacity:.85"><span>Pending 120</span><span>Lifetime 395</span></div></div>
+ <p class="sub" style="margin-bottom:10px">Demo coins. Rewards are credited by the server after verification, never by a tap.</p><div class="acts"><button class="btn sec" onclick="hist()">Reward history</button><button class="btn sec" onclick="wd()">Withdraw</button></div>
+ <h2 class="mt">Sponsored opportunities</h2>`+camps.map((c,i)=>`<div class="card glass ${stg(i+1)}"><div class="row"><div class="av" style="${grad(c.id+3)};border-radius:16px">${I(c.i)}</div><div class="grow"><span class="pill">Sponsored</span><div><b>${c.s}</b></div></div><b class="row" style="gap:4px;color:var(--pk)">${I('coin','sm')}${c.c}</b></div><h3 class="mt">${c.t}</h3><p class="sub">${c.d}</p><div class="row mt wrap"><span class="pill">${c.st}</span><button class="btn sm sec" onclick="camp(${c.id})">Learn More</button>${c.st==='Available'?`<button class="btn sm" onclick="toast('Started. Awaiting verification')">Participate</button>`:''}</div></div>`).join('')}
+function camp(id){const c=camps.find(x=>x.id===id);sheet(`<h3>${c.t}</h3><p class="sub">by ${c.s}</p><p class="mt"><b>Reward:</b> ${c.c} coins</p><p><b>Required:</b> ${c.req}</p><p><b>Status:</b> ${c.st}</p><button class="btn mt" style="width:100%" onclick="closeS()">Close</button>`)}
+function hist(){sheet(`<h3>Reward history</h3>${[['BookBarn reading challenge','+30','Completed'],['FitNest group workout','+120','Pending'],['Welcome bonus','+50','Completed']].map(r=>`<div class="tog"><div><b>${r[0]}</b><div class="sub">${r[2]}</div></div><b>${r[1]}</b></div>`).join('')}`)}
+function wd(){sheet(`<h3>Withdraw</h3><p class="sub">Unavailable in demo mode. A backend and payment provider are required.</p><button class="btn mt" style="width:100%" onclick="closeS()">OK</button>`)}
+// CREATE
+const steps=['Category','Title','Details','When and where','Review'];
+function create(){const d=S.draft,n=steps.length;let b='';
+ if(S.step===0)b=`<div class="cat">${cats.map(c=>`<button class="glass ${S.cat===c[0]?'on':''}" onclick="S.cat='${c[0]}';render()">${I(c[1],'lg')}${c[0]}</button>`).join('')}</div>`;
+ if(S.step===1)b=`<label for="ti">Title</label><input id="ti" maxlength="80" value="${d.title}" oninput="S.draft.title=this.value"><div class="sub mt">Max 80 characters</div>`;
+ if(S.step===2)b=`<label for="de">Description</label><textarea id="de" rows="5" maxlength="400" oninput="S.draft.desc=this.value">${d.desc}</textarea><label for="ph">Photos</label><input id="ph" type="file" accept="image/*" multiple onchange="prevImg(this)"><div class="row wrap mt" id="pv"></div>`;
+ if(S.step===3)b=`<label for="da">Date</label><input id="da" type="date" min="${new Date().toISOString().slice(0,10)}" value="${d.date}" oninput="S.draft.date=this.value"><label for="tm">Time</label><input id="tm" type="time" value="${d.time}" oninput="S.draft.time=this.value"><label for="lo">General location</label><input id="lo" value="${d.loc}" oninput="S.draft.loc=this.value"><label for="pp">People needed</label><input id="pp" type="number" min="1" max="50" value="${d.ppl}" oninput="S.draft.ppl=this.value"><label for="rw">Gift or reward (optional)</label><input id="rw" value="${d.reward}" oninput="S.draft.reward=this.value">`;
+ if(S.step===4)b=`<div class="card glass"><span class="pill">${I(ci(S.cat),'sm')}${S.cat}</span><h3 class="mt">${d.title}</h3><p class="sub">${d.desc}</p><div class="meta mt"><span>${I('pin','sm')}${d.loc}</span><span>${I('cal','sm')}${d.date} ${d.time}</span><span>${I('users','sm')}${d.ppl}</span></div>${d.reward?`<div class="mt"><span class="pill">${I('gift','sm')}${d.reward}</span></div>`:''}</div>`;
+ return `<h2>Create an activity</h2><div class="sub">Step ${S.step+1} of ${n} · ${steps[S.step]}</div><div class="prog"><i style="width:${(S.step+1)/n*100}%"></i></div><div class="rise">${b}</div>${S.errs.m?`<div class="err" role="alert">${S.errs.m}</div>`:''}<div class="acts mt">${S.step?'<button class="btn sec" onclick="S.step--;S.errs={};render()">Back</button>':''}<button class="btn" onclick="nextS()">${S.step===n-1?'Publish':'Next'}</button></div>`}
+function prevImg(el){const pv=$('#pv');pv.innerHTML='';[...el.files].slice(0,6).forEach(f=>{const i=document.createElement('img');i.src=URL.createObjectURL(f);i.alt='Preview';i.style.cssText='width:80px;height:80px;object-fit:cover;border-radius:16px';pv.append(i)})}
+function nextS(){const d=S.draft;let m='';
+ if(S.step===0&&!S.cat)m='Pick a category.';
+ if(S.step===1&&d.title.trim().length<4)m='Title needs at least 4 characters.';
+ if(S.step===2&&d.desc.trim().length<10)m='Description needs at least 10 characters.';
+ if(S.step===3){if(!d.date||!d.time||!d.loc.trim())m='Date, time and location are required.';else if(new Date(d.date+'T'+d.time)<new Date())m='Choose a future date and time.';else if(!(+d.ppl>=1))m='At least 1 person is required.'}
+ S.errs={m};if(m)return render();
+ if(S.step<steps.length-1){S.step++;return render()}
+ posts.unshift({id:Date.now(),p:me,cat:S.cat,t:d.title,d:d.desc,loc:d.loc,when:d.date+' '+d.time,ppl:d.ppl,rew:d.reward,tm:'now',tag:['For You','Nearby','Following','Latest'],ic:0});
+ S.draft={title:'',desc:'',date:'',time:'',loc:'',ppl:2,reward:''};S.cat=null;S.step=0;S.errs={};toast('Activity published');location.hash='home'}
+// PROFILE
+function profile(){const T=['About','Posts','Photos','Activities','Connections'],mine=posts.filter(p=>p.p.id===100),cn=people.filter(p=>S.req[p.id]==='connected');
+ const tc={About:'<p>Loves weekend trips, cafes and board games.</p><div class="row wrap mt"><span class="pill">Travel</span><span class="pill">Games</span><span class="pill">Coffee</span></div>',Posts:mine.length?mine.map((p,i)=>feed(p,i)).join(''):'<p class="sub">No posts yet. Tap Create to publish one.</p>',Photos:'<p class="sub">No photos yet.</p>',Activities:'<p class="sub">No activities joined yet.</p>',Connections:cn.map(p=>`<div class="row" style="margin-bottom:8px">${av(p)}<b>${p.n}</b></div>`).join('')||'<p class="sub">Connect with people from Radar.</p>'}[S.tab];
+ const th=[['light','sun','Light'],['dark','moon','Dark'],['system','grid','System']];
+ return `<div class="cover rise"></div><div class="center rise">${av(me,'lg').replace('class="av lg"','class="av lg" style="margin:0 auto;border:4px solid var(--bg);'+grad(7)+'"')}<h2 class="mt" style="margin-bottom:2px">${me.n}</h2><div class="sub">@${me.u} · Hyderabad</div></div>
+ <div class="card glass stats mt rise"><div><b>${mine.length}</b>Posts</div><div><b>${cn.length}</b>Friends</div><div><b>3</b>Activities</div><div><b>0</b>Photos</div></div>
+ <div class="acts"><button class="btn" onclick="toast('Profile editor needs the backend')">Edit Profile</button><button class="btn sec" onclick="share()">${I('share','sm')}Share</button></div>
+ <div class="chips mt">${T.map(t=>`<button class="chip glass ${S.tab===t?'on':''}" onclick="S.tab='${t}';render()">${t}</button>`).join('')}</div><div class="card glass">${tc}</div>
+ <h2>Settings</h2><div class="card glass"><b>Appearance</b><div class="chips mt">${th.map(t=>`<button class="chip glass ${S.theme===t[0]?'on':''}" onclick="S.theme='${t[0]}';store.set('theme','${t[0]}');applyTheme();render()">${I(t[1],'sm')}${t[2]}</button>`).join('')}</div>
+ <div class="tog"><div><b>Reduced motion</b><div class="sub">Turns off animations.</div></div>${sw('rm',"S.rm=!S.rm;store.set('rm',S.rm);applyTheme();render()")}</div></div>
+ <div class="card glass"><b>Privacy</b>${[['online','Show online status','Others see when you are active.'],['radar','Radar visibility','Appear to people nearby.'],['req','Allow friend requests','Anyone can send you requests.'],['dist','Hide approximate distance','Show “nearby” instead of kilometres.'],['read','Read receipts','Show when you have read messages.']].map(r=>`<div class="tog"><div><b>${r[1]}</b><div class="sub">${r[2]}</div></div>${sw(r[0],`S.priv.${r[0]}=!S.priv.${r[0]};store.set('priv',S.priv);render()`)}</div>`).join('')}</div>
+ <div class="card glass"><button class="btn sec" style="width:100%;margin-bottom:8px" onclick="sheet('<h3>Help and Support</h3><p class=sub>Help Center, FAQ, Safety Guidelines and Terms appear here once the content service is connected. Version 1.0.0 demo.</p>')">Help and Support</button><button class="btn bad" style="width:100%" onclick="toast('Signed out (demo)')">Sign out</button></div>`}
+// OVERLAYS
+function notifs(){const b=$('#nb');b&&b.remove();sheet(`<h3>Notifications</h3>${[['users','Kabir sent you a friend request'],['check','Aanya accepted your request'],['coin','FitNest reward pending verification']].map(n=>`<div class="tog"><div class="row">${I(n[0])}<span>${n[1]}</span></div></div>`).join('')}`)}
+function msgs(){sheet(`<h3>Messages</h3>${people.slice(0,3).map(p=>`<div class="row tog">${av(p)}<div class="grow"><b>${p.n}</b><div class="sub">${S.req[p.id]==='connected'?'Say hi!':'Connect first to chat'}</div></div></div>`).join('')}<p class="sub mt">Chat is only available between connected people.</p>`)}
+function srch(){sheet(`<h3>Search</h3><label for="q">People, activities, interests</label><input id="q" oninput="doS(this.value)" placeholder="Try hiking"><div id="sr" class="mt"></div>`)}
+let st;function doS(v){clearTimeout(st);st=setTimeout(()=>{v=v.toLowerCase().trim();const r=v?people.filter(p=>(p.n+p.int.join()+p.loc).toLowerCase().includes(v)):[];$('#sr').innerHTML=v?(r.length?r.map(p=>`<button class="row tog" style="width:100%;text-align:left" onclick="prof(${p.id})">${av(p)}<div><b>${p.n}</b><div class="sub">${p.loc}</div></div></button>`).join(''):'<p class="sub">No results.</p>'):''},250)}
+const isDark=()=>S.theme==='dark'||(S.theme==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);
+function toggleTheme(){S.theme=isDark()?'light':'dark';store.set('theme',S.theme);applyTheme();render();toast(isDark()?'Night mode on':'Day mode on')}
+let N=[{id:1,t:'req',w:2,x:'sent you a friend request.',tm:'2m',s:'Today',read:0},{id:2,t:'ok',w:1,x:'accepted your request. Say hi!',tm:'1h',s:'Today',read:0},{id:3,t:'msg',w:3,x:'sent you a message.',tm:'3h',s:'Today',read:0},{id:4,t:'join',w:4,x:'wants to join your activity.',tm:'1d',s:'This week',read:1},{id:5,t:'rw',w:0,x:'Your FitNest reward is pending verification.',tm:'2d',s:'This week',read:1},{id:6,t:'sec',w:0,x:'New sign-in to your account from Hyderabad.',tm:'4d',s:'This week',read:1}];
+const NI={req:'users',ok:'check',msg:'chat',join:'users',rw:'coin',sec:'lock'};
+const NF={All:null,Requests:['req','ok','join'],Messages:['msg'],Rewards:['rw','sec']};
+let nf='All';
+function notifs(){location.hash='notifications'}
+function upBadge(){const u=N.filter(n=>!n.read).length,b=$('#nb');b.textContent=u;b.style.display=u?'grid':'none'}
+function notifPage(){const L=N.filter(n=>!NF[nf]||NF[nf].includes(n.t));let k=0;
+ const grp=s=>{const g=L.filter(n=>n.s===s);return g.length?`<div class="sec-h">${s}</div>`+g.map(n=>nCard(n,k++)).join(''):''};
+ return `<div class="row"><button class="ib glass" aria-label="Back" onclick="location.hash='home'">${I('left')}</button><h2 class="grow" style="margin:0">Notifications</h2><button class="btn sm sec" onclick="N.forEach(n=>n.read=1);render()">Mark all read</button></div><div class="chips mt">${Object.keys(NF).map(f=>`<button class="chip glass ${nf===f?'on':''}" onclick="nf='${f}';render()">${f}</button>`).join('')}</div>`+(L.length?grp('Today')+grp('This week'):`<div class="card glass center rise">${I('bell','lg')}<h3 class="mt">You’re all caught up</h3><p class="sub">New requests and updates will show up here.</p></div>`)}
+function nCard(n,i){const p=people.find(x=>x.id===n.w)||{id:9,n:'',on:0};let a='';
+ if(n.t==='req')a=S.req[p.id]==='connected'?'<span class="pill">Connected</span>':`<div class="row"><button class="btn sm" onclick="nAct(${n.id},1)">Accept</button><button class="btn sm sec" onclick="nAct(${n.id},0)">Decline</button></div>`;
+ else if(n.t==='msg'||n.t==='ok')a=`<button class="btn sm sec" onclick="nRead(${n.id});msgs()">Message</button>`;
+ else if(n.t==='join')a=`<button class="btn sm sec" onclick="nRead(${n.id});prof(${p.id})">View profile</button>`;
+ return `<div class="nt glass rise ${n.read?'':'un'}" style="--i:${i}" id="n${n.id}" onclick="nRead(${n.id})"><div style="position:relative;flex:none">${n.w?av(p):`<div class="av" style="${grad(7)}">${I(NI[n.t])}</div>`}<span class="ico">${I(NI[n.t])}</span></div><div class="grow"><div>${n.w?`<b>${p.n}</b> `:''}${n.x}</div><div class="sub">${n.tm} ago</div>${a?`<div class="mt" onclick="event.stopPropagation()">${a}</div>`:''}</div>${n.read?'':'<i class="ud"></i>'}<button class="ib" aria-label="Dismiss notification" onclick="event.stopPropagation();nDel(${n.id})">${I('x','sm')}</button></div>`}
+function nRead(id){const n=N.find(x=>x.id===id);if(n&&!n.read){n.read=1;const e=$('#n'+id);if(e){e.classList.remove('un');const d=e.querySelector('.ud');d&&d.remove()}upBadge()}}
+function nAct(id,ok){const n=N.find(x=>x.id===id);if(ok){S.req[n.w]='connected';n.read=1;toast('You’re now connected');render()}else nDel(id)}
+const R={like:{},save:{},st:{}};
+const CP=[{id:1,s:'Brew & Co',i:'food',t:'Try the new cafe menu',d:'Visit any outlet and post a verified review.',c:50,st:'Available',lk:128,req:'Visit and verified review'},{id:2,s:'FitNest',i:'trophy',t:'Join a group workout',d:'Attend one community session near you.',c:120,st:'Verification Pending',lk:342,req:'Check-in verified by organiser'},{id:3,s:'CineMax',i:'film',t:'Rate a new release',d:'Watch and share your honest rating.',c:75,st:'Available',lk:89,req:'Ticket proof and rating'},{id:4,s:'Chai Point',i:'cam',t:'Share your chai moment',d:'Post a photo with the campaign tag.',c:40,st:'Available',lk:211,req:'Photo post with tag'},{id:5,s:'BookBarn',i:'book',t:'Weekly reading challenge',d:'Share your reading list for the week.',c:30,st:'Completed',lk:57,req:'Submit reading list'}];
+let RO;
+function bindReels(){const r=$('#reels');if(!r)return;RO&&RO.disconnect();RO=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('in',e.isIntersecting)),{root:r,threshold:.6});r.querySelectorAll('.reel').forEach(e=>RO.observe(e))}
+function reelHTML(c,i){const s=R.st[c.id]||c.st,lk=R.like[c.id],sv=R.save[c.id];
+ const b=s==='Available'?`<button class="btn" style="width:100%" onclick="rAct('go',${c.id})">Participate and earn ₹${c.c}</button>`:`<button class="btn sec" style="width:100%;color:#fff;background:rgba(255,255,255,.18)" disabled>${s==='Completed'?'Completed':'Verification pending'}</button>`;
+ return `<section class="reel" id="r${c.id}" style="${grad(c.id+3)}" aria-label="${c.t}">${I(c.i,'bgi')}<div class="tp"><span class="tag">${I('spark','sm')}Sponsored</span><span class="tag">${i+1} / ${CP.length}</span></div>
+ <div class="rail"><button class="${lk?'lk':''}" aria-label="Like" onclick="rAct('like',${c.id})">${I('heart')}${c.lk+(lk?1:0)}</button><button aria-label="Share" onclick="share()">${I('share')}Share</button><button class="${sv?'lk':''}" aria-label="Save" onclick="rAct('save',${c.id})">${I('mark')}Save</button><button aria-label="Details" onclick="camp(${c.id})">${I('info')}Info</button></div>
+ <div class="tx"><div class="row"><div class="av" style="width:36px;height:36px;${grad(c.id+9)}">${I(c.i,'sm')}</div><b>${c.s}</b><span class="tag">${s}</span></div><div class="rs">₹${c.c}<span style="font-size:.8rem;font-weight:600;opacity:.8">reward</span></div><div><h3 style="font-size:1.25rem">${c.t}</h3><p style="opacity:.85;font-size:.85rem">${c.d}</p></div>${b}</div></section>`}
+function earn(){setTimeout(bindReels,0);return `<div class="card glass row rise" style="padding:12px"><div class="grow"><div class="sub">Available balance</div><b style="font-size:1.5rem">₹245.00</b><div class="sub">Pending ₹120 · Lifetime ₹395</div></div><button class="btn sm sec" onclick="hist()">History</button><button class="btn sm" onclick="wd()">Withdraw</button></div><div class="reels" id="reels" tabindex="0" aria-label="Sponsored earning reels. Swipe up for the next one">${CP.map(reelHTML).join('')}</div><p class="sub center mt">Swipe up for the next offer. Demo rupees, credited only after verification.</p>`}
+function rAct(a,id){const c=CP.find(x=>x.id===id);if(a==='like')R.like[id]=!R.like[id];if(a==='save'){R.save[id]=!R.save[id];toast(R.save[id]?'Saved':'Removed')}if(a==='go'){R.st[id]='Verification Pending';toast('Started. Reward is credited after verification')}
+ $('#r'+id).outerHTML=reelHTML(c,CP.indexOf(c));const n=$('#r'+id);n.classList.add('in');RO&&RO.observe(n)}
+function camp(id){const c=CP.find(x=>x.id===id);sheet(`<h3>${c.t}</h3><p class="sub">by ${c.s}</p><p class="mt"><b>Reward:</b> ₹${c.c}</p><p><b>Required:</b> ${c.req}</p><p><b>Status:</b> ${R.st[id]||c.st}</p><button class="btn mt" style="width:100%" onclick="closeS()">Close</button>`)}
+function hist(){sheet(`<h3>Reward history</h3>${[['BookBarn reading challenge','+₹30','Completed'],['FitNest group workout','+₹120','Pending'],['Welcome bonus','+₹50','Completed']].map(r=>`<div class="tog"><div><b>${r[0]}</b><div class="sub">${r[2]}</div></div><b>${r[1]}</b></div>`).join('')}`)}
+function wd(){sheet(`<h3>Withdraw</h3><p class="sub">Minimum withdrawal ₹100 to UPI or bank. Unavailable in demo mode: it needs a backend and an authorised payment provider.</p><button class="btn mt" style="width:100%" onclick="closeS()">OK</button>`)}
+S.req[1]=S.req[3]='connected';
+let INC=[2],mt='Chats';
+const UN={1:1,3:1};
+const M={1:[{f:'t',x:'Hey Priya! Thanks for connecting.',tm:'10:02'},{f:'m',x:'Hi Aanya! Is the Ananthagiri trek still on?',tm:'10:04'},{f:'t',x:'Yes! Saturday 6 AM. Want to join us?',tm:'10:05'}],3:[{f:'t',x:'Are you coming to the study circle on Sunday?',tm:'Yesterday'}]};
+const RP=['That sounds great!','Count me in, let us plan it.','Nice, tell me more.','Sure, see you there!'];
+const hm=()=>new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+const P=id=>people.find(x=>x.id===id);
+const lastM=id=>{const l=(M[id]||[]).slice(-1)[0];return l?(l.img?'Sent a photo':(l.f==='m'?'You: ':'')+l.x):'You are connected. Say hi!'};
+function upMsg(){const u=Object.values(UN).filter(Boolean).length,b=document.querySelector('header .ib[aria-label="Messages"] .bdg');if(b){b.textContent=u;b.style.display=u?'grid':'none'}}
+function msgs(){location.hash='messages'}
+function messagesPage(){setTimeout(upMsg,0);const cn=people.filter(p=>S.req[p.id]==='connected'),inc=INC.filter(i=>S.req[i]!=='connected');let b='';
+ if(mt==='Chats')b=cn.length?cn.map((p,i)=>`<button class="nt glass rise" style="--i:${i};width:100%;text-align:left" onclick="openChat(${p.id})">${av(p)}<div class="grow" style="min-width:0"><b>${p.n}</b><div class="sub" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${lastM(p.id)}</div></div>${UN[p.id]?'<i class="ud"></i>':''}</button>`).join(''):`<div class="card glass center">${I('chat','lg')}<h3 class="mt">No chats yet</h3><p class="sub">Connect with people on Radar to start chatting.</p></div>`;
+ else b=inc.length?inc.map((id,i)=>{const p=P(id);return `<div class="card glass rise" style="--i:${i}"><div class="row">${av(p)}<div class="grow"><b>${p.n}</b><div class="sub">@${p.u} · ${S.priv.dist?'Nearby':p.km+' km'}</div></div></div><p class="mt">${p.bio}</p><div class="row wrap mt">${p.int.map(x=>`<span class="pill">${x}</span>`).join('')}</div><div class="acts mt"><button class="btn sm" onclick="acceptReq(${id})">Accept</button><button class="btn sm sec" onclick="INC=INC.filter(x=>x!==${id});toast('Request declined');render()">Decline</button><button class="btn sm sec" onclick="prof(${id})">Profile</button></div></div>`}).join(''):`<div class="card glass center">${I('users','lg')}<h3 class="mt">No requests</h3><p class="sub">New friend requests will appear here.</p></div>`;
+ return `<div class="row"><button class="ib glass" aria-label="Back" onclick="location.hash='home'">${I('left')}</button><h2 class="grow" style="margin:0">Messages</h2></div><button class="srch glass mt" onclick="srch()">${I('search','sm')}Search</button><div class="chips">${['Chats','Requests'].map(t=>`<button class="chip glass ${mt===t?'on':''}" onclick="mt='${t}';render()">${t}${t==='Requests'&&inc.length?' ('+inc.length+')':''}</button>`).join('')}</div>${b}`}
+function acceptReq(id){S.req[id]='connected';INC=INC.filter(x=>x!==id);M[id]=M[id]||[];toast('You’re now connected');render();openChat(id)}
+function openChat(id){const o=$('#cv');o&&o.remove();M[id]=M[id]||[];UN[id]=0;upMsg();const d=document.createElement('div');d.id='cv';d.innerHTML=chatHTML(id);document.body.append(d);$('#cb').scrollTop=1e9}
+function closeChat(){const c=$('#cv');c&&c.remove();render()}
+const bub=(m,p)=>{const me=m.f==='m';return `<div class="mr ${me?'r':''}">${me?'':`<div class="av" style="width:28px;height:28px;font-size:.65rem;${grad(p.id)}">${ini(p.n)}</div>`}<div class="mb">${m.img?`<img src="${m.img}" alt="Photo sent">`:m.x.replace(/</g,'&lt;')}<small>${m.tm}</small></div></div>`};
+function chatHTML(id){const p=P(id);return `<div class="chatpage" role="dialog" aria-label="Chat with ${p.n}"><div class="ch-h glass"><button class="ib" aria-label="Back" onclick="closeChat()">${I('left')}</button><button class="row grow" style="text-align:left;min-width:0" onclick="prof(${id})">${av(p)}<div style="min-width:0"><b>${p.n}</b><div class="sub">${p.on&&S.priv.online?'Active now':'Active today'}</div></div></button><button class="ib" aria-label="View profile" onclick="prof(${id})">${I('info')}</button></div>
+ <div class="ch-b" id="cb"><div class="pcard card glass rise"><div style="display:flex;justify-content:center">${av(p,'lg')}</div><h3 class="mt">${p.n}</h3><div class="sub">@${p.u} · ${p.loc}</div><div class="sub" style="margin:4px 0 10px">You’re connected on Friendly</div><div class="row wrap" style="justify-content:center">${p.int.slice(0,3).map(x=>`<span class="pill">${x}</span>`).join('')}</div><button class="btn sm sec mt" onclick="prof(${id})">View profile</button></div>${M[id].map(m=>bub(m,p)).join('')}</div>
+ <div class="ch-i"><label class="ib glass" for="cf" aria-label="Attach photo">${I('cam')}</label><input type="file" id="cf" accept="image/*" hidden onchange="sendImg(this)"><input type="text" id="ci" placeholder="Message…" aria-label="Message" maxlength="500" oninput="$('#cs').style.opacity=this.value.trim()?1:.5" onkeydown="if(event.key==='Enter')sendM()"><button class="rnd p" id="cs" aria-label="Send" onclick="sendM()" style="width:46px;height:46px;flex:none;opacity:.5">${I('send')}</button></div></div>`}
+function addB(m){const b=$('#cb');if(!b)return;b.insertAdjacentHTML('beforeend',bub(m,P(S.chat)));b.scrollTop=b.scrollHeight}
+function sendM(){const i=$('#ci'),v=i.value.trim();if(!v)return;i.value='';$('#cs').style.opacity=.5;push({f:'m',x:v,tm:hm()})}
+function sendImg(el){const f=el.files[0];if(f)push({f:'m',img:URL.createObjectURL(f),tm:hm()})}
+function push(m){const id=S.chat;M[id].push(m);addB(m);const b=$('#cb');b.insertAdjacentHTML('beforeend','<div class="mr" id="ty"><div class="mb ty"><i></i><i></i><i></i></div></div>');b.scrollTop=b.scrollHeight;setTimeout(()=>{const t=$('#ty');if(!t)return;t.remove();if(S.priv.read)$('#cb').insertAdjacentHTML('beforeend','<div class="seen">Seen</div>');const r={f:'t',x:RP[Math.floor(Math.random()*RP.length)],tm:hm()};M[id].push(r);addB(r)},1500)}
+function reqBtn(id){const s=S.req[id];return s==='pending'?`<button class="btn" disabled>Request Pending</button>`:s==='connected'?`<button class="btn" onclick="closeS();openChat(${id})">Message</button>`:`<button class="btn" onclick="closeS();sendReq(${id})">Send Request</button>`}
+function celebrate(id){const p=P(id);sheet(`<div class="center"><div class="row" style="justify-content:center;gap:0">${av(me,'lg')}<div style="margin:0 -14px;z-index:2;width:44px;height:44px;border-radius:50%;background:var(--pk);color:#fff;display:grid;place-items:center;box-shadow:0 0 0 4px var(--bg);animation:pop .5s both">${I('check')}</div>${av(p,'lg')}</div><h2 class="mt">You’re Connected!</h2><p class="sub">You and ${p.n} can now chat.</p><div class="acts mt"><button class="btn" onclick="closeS();openChat(${id})">Send Message</button><button class="btn sec" onclick="closeS()">Keep Discovering</button></div></div>`)}
+function fitReels(){const r=$('#reels');if(!r)return;const t=r.getBoundingClientRect().top+scrollY;r.style.height=Math.max(360,innerHeight-t-140)+'px'}
+addEventListener('resize',fitReels);
+function bindReels(){const r=$('#reels');if(!r)return;fitReels();RO&&RO.disconnect();RO=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('in',e.isIntersecting)),{root:r,threshold:.6});r.querySelectorAll('.reel').forEach(e=>RO.observe(e))}
+S.ec='All';
+const CAT={food:'Food',trophy:'Fitness',film:'Movies',cam:'Photos',book:'Books'};
+function oc(c,i){return `<button class="card glass rise" style="--i:${i};width:100%;text-align:left;display:block" onclick="openReels(${c.id})" aria-label="Watch ${c.t}"><div class="photo" style="${grad(c.id+3)};min-height:170px">${I(c.i,'bgi')}<div class="tp"><span class="tag">${CAT[c.i]}</span><span class="tag">${R.st[c.id]||c.st}</span></div><div class="rs">₹${c.c}<span style="font-size:.8rem;font-weight:600;opacity:.8">reward</span></div><span class="rnd p" style="position:absolute;right:14px;bottom:14px;width:46px;height:46px;z-index:2">${I('play')}</span></div><div class="row mt"><div class="av" style="width:34px;height:34px;${grad(c.id+9)}">${I(c.i,'sm')}</div><div class="grow"><b>${c.s}</b><div class="sub">Sponsored</div></div><span class="pill">Watch and earn</span></div><h3 class="mt">${c.t}</h3><p class="sub">${c.d}</p><div class="meta mt"><span>${I('check','sm')}${c.req}</span><span>${I('heart','sm')}${c.lk+(R.like[c.id]?1:0)}</span></div></button>`}
+function earn(){const L=CP.filter(c=>S.ec==='All'||CAT[c.i]===S.ec);return `<div class="card glass row rise" style="padding:12px"><div class="grow"><div class="sub">Available balance</div><b style="font-size:1.5rem">₹245.00</b><div class="sub">Pending ₹120 · Lifetime ₹395</div></div><button class="btn sm sec" onclick="hist()">History</button><button class="btn sm" onclick="wd()">Withdraw</button></div><div class="chips">${['All',...Object.values(CAT)].map(k=>`<button class="chip glass ${S.ec===k?'on':''}" onclick="S.ec='${k}';render()">${k}</button>`).join('')}</div>${L.length?L.map(oc).join(''):`<div class="card glass center">${I('coin','lg')}<h3 class="mt">No offers here</h3><p class="sub">Try another category.</p></div>`}<p class="sub center">Tap an offer to open reels. Demo rupees, credited only after verification.</p>`}
+function openReels(id){const o=$('#rv');o&&o.remove();const d=document.createElement('div');d.id='rv';d.className='rv';d.setAttribute('role','dialog');d.setAttribute('aria-label','Offer reels');d.innerHTML=`<button class="ib glass" id="rx" aria-label="Close reels" onclick="closeReels()">${I('x')}</button><div class="reels" id="rvs">${CP.map(reelHTML).join('')}</div>`;document.body.append(d);document.body.style.overflow='hidden';const r=$('#rvs');RO&&RO.disconnect();RO=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('in',e.isIntersecting)),{root:r,threshold:.6});r.querySelectorAll('.reel').forEach(e=>RO.observe(e));$('#r'+id).scrollIntoView({block:'start'})}
+function closeReels(){const o=$('#rv');o&&o.remove();document.body.style.overflow='';RO&&RO.disconnect();render()}
+S.ph=[];S.pt='posts';S.wf='All';
+Object.assign(me,{bio:'Weekend traveller, cafe hopper and board game fan.',loc:'Hyderabad',int:['Travel','Games','Coffee','Photography']});
+posts.push({id:201,p:me,cat:'Photography',t:'Sunday photo walk',d:'Golden hour around Charminar. Bring a camera.',loc:'Charminar',when:'Sun, 5:00 PM',ppl:4,rew:'',tm:'3d',tag:['For You','Latest'],ic:12},{id:202,p:me,cat:'Food and Restaurant',t:'Biryani lunch meetup',d:'Trying a new place in Madhapur. Join us.',loc:'Madhapur',when:'Sat, 1:00 PM',ppl:3,rew:'',tm:'5d',tag:['For You','Nearby'],ic:8});
+const PT=[['about','info','About'],['posts','grid','Posts'],['photos','img','Photos'],['acts','cal','Activities'],['cons','users','Friends']];
+function profile(){const mine=posts.filter(p=>p.p.id===100),cn=people.filter(p=>S.req[p.id]==='connected'),act=posts.filter(p=>S.req['j'+p.id]);let b='';
+ if(S.pt==='about')b=`<div class="card glass rise"><h3>About</h3><p class="mt">${me.bio}</p><div class="mt"><div class="ir">${I('pin')}${me.loc}</div><div class="ir">${I('cal')}Joined Nov 2026</div><div class="ir">${I('book')}English, Hindi, Telugu</div></div><div class="row wrap mt">${me.int.map(x=>`<span class="pill">${x}</span>`).join('')}</div></div>`;
+ if(S.pt==='posts')b=mine.length?`<div class="gd">${mine.map((p,i)=>`<button class="tl" style="${grad(p.id)};animation-delay:${i*50}ms" aria-label="${p.t}" onclick="postV(${p.id})">${I(ci(p.cat),'lg')}<span>${p.t}</span></button>`).join('')}</div>`:`<div class="card glass center">${I('grid','lg')}<h3 class="mt">No posts yet</h3><p class="sub">Tap Create to publish your first activity.</p></div>`;
+ if(S.pt==='photos')b=`<div class="gd"><label class="tl glass" for="up" style="color:var(--pk);cursor:pointer" aria-label="Add photos">${I('plus','lg')}</label><input id="up" type="file" accept="image/*" multiple hidden onchange="addPh(this)">${S.ph.map((u,i)=>`<button class="tl" aria-label="Open photo ${i+1}" onclick="phV(${i})"><img src="${u}" alt="Your photo ${i+1}"></button>`).join('')}</div>${S.ph.length?'':'<p class="sub center mt">No photos yet. Tap + to add.</p>'}`;
+ if(S.pt==='acts')b=act.length?act.map((p,i)=>feed(p,i)).join(''):`<div class="card glass center">${I('cal','lg')}<h3 class="mt">No activities yet</h3><p class="sub">Join one from Home and it shows up here.</p></div>`;
+ if(S.pt==='cons')b=cn.length?cn.map((p,i)=>`<div class="nt glass rise" style="--i:${i}">${av(p)}<div class="grow"><b>${p.n}</b><div class="sub">@${p.u}</div></div><button class="btn sm" onclick="openChat(${p.id})">Message</button></div>`).join(''):`<div class="card glass center">${I('users','lg')}<h3 class="mt">No friends yet</h3><p class="sub">Connect with people from Radar.</p></div>`;
+ return `<div class="cover rise"></div><div class="center rise"><div style="display:flex;justify-content:center">${av(me,'lg').replace('class="av lg"','class="av lg" style="border:4px solid var(--bg);'+grad(7)+'"')}</div><h2 class="mt" style="margin-bottom:2px">${me.n}</h2><div class="sub">@${me.u} · ${me.loc}</div><p style="margin:8px auto 0;max-width:36ch">${me.bio}</p></div>
+ <div class="card glass stats mt rise"><div><b>${mine.length}</b>Posts</div><div><b>${cn.length}</b>Friends</div><div><b>${act.length}</b>Activities</div><div><b>${S.ph.length}</b>Photos</div></div>
+ <div class="acts"><button class="btn" onclick="editP()">${I('pen','sm')}Edit profile</button><button class="btn sec" style="flex:none" aria-label="Share profile" onclick="share()">${I('share','sm')}</button><button class="btn sec" style="flex:none" aria-label="Open wallet" onclick="location.hash='wallet'">${I('coin','sm')}</button></div>
+ <div class="itabs" role="tablist">${PT.map(t=>`<button class="it" role="tab" aria-label="${t[2]}" aria-selected="${S.pt===t[0]}" onclick="S.pt='${t[0]}';render()" ${S.pt===t[0]?'style="color:var(--pk)"':''}>${I(t[1])}${S.pt===t[0]?'<i style="position:absolute;left:22%;right:22%;bottom:-1px;height:3px;background:var(--pk);border-radius:3px"></i>':''}</button>`).join('')}</div>${b}${setHTML()}`}
+function setHTML(){return `<h2 class="mt">Settings</h2><div class="card glass"><b>Appearance</b><div class="chips mt">${[['light','sun','Light'],['dark','moon','Dark'],['system','grid','System']].map(t=>`<button class="chip glass ${S.theme===t[0]?'on':''}" onclick="S.theme='${t[0]}';store.set('theme','${t[0]}');applyTheme();render()">${I(t[1],'sm')}${t[2]}</button>`).join('')}</div><div class="tog"><div><b>Reduced motion</b><div class="sub">Turns off animations.</div></div>${sw('rm',"S.rm=!S.rm;store.set('rm',S.rm);applyTheme();render()")}</div></div>
+ <div class="card glass"><b>Privacy</b>${[['online','Show online status','Others see when you are active.'],['radar','Radar visibility','Appear to people nearby.'],['req','Allow friend requests','Anyone can send you requests.'],['dist','Hide approximate distance','Show “nearby” instead of kilometres.'],['read','Read receipts','Show “Seen” in chats.']].map(r=>`<div class="tog"><div><b>${r[1]}</b><div class="sub">${r[2]}</div></div>${sw(r[0],`S.priv.${r[0]}=!S.priv.${r[0]};store.set('priv',S.priv);render()`)}</div>`).join('')}</div>
+ <div class="card glass"><button class="btn sec" style="width:100%;margin-bottom:8px" onclick="sheet('<h3>Help and Support</h3><p class=sub>Help Center, FAQ, Safety Guidelines and Terms appear here once the content service is connected. Version 1.0.0 demo.</p>')">Help and Support</button><button class="btn bad" style="width:100%" onclick="toast('Signed out (demo)')">Sign out</button></div>`}
+function postV(id){sheet(feed(posts.find(p=>p.id===id),0))}
+function addPh(el){[...el.files].slice(0,12).forEach(f=>S.ph.push(URL.createObjectURL(f)));toast('Photos added');render()}
+function phV(i){sheet(`<img src="${S.ph[i]}" alt="Your photo" style="width:100%;border-radius:3px"><div class="acts mt"><button class="btn sec" onclick="closeS()">Close</button><button class="btn bad" onclick="S.ph.splice(${i},1);closeS();toast('Photo deleted');render()">Delete</button></div>`)}
+function editP(){sheet(`<h3>Edit profile</h3><label for="en">Full name</label><input id="en" value="${me.n}" maxlength="40"><label for="eu">Username</label><input id="eu" value="${me.u}" maxlength="20"><label for="eb">Bio</label><textarea id="eb" rows="3" maxlength="150">${me.bio}</textarea><label for="el">Location</label><input id="el" value="${me.loc}" maxlength="40"><div class="err" id="ee" role="alert"></div><div class="acts mt"><button class="btn sec" onclick="closeS()">Cancel</button><button class="btn" onclick="saveP()">Save</button></div>`)}
+function saveP(){const n=$('#en').value.trim(),u=$('#eu').value.trim().toLowerCase(),e=$('#ee');if(n.length<2)return e.textContent='Name needs at least 2 characters.';if(!/^[a-z0-9._]{3,20}$/.test(u))return e.textContent='Username: 3 to 20 letters, numbers, dot or underscore.';me.n=n;me.u=u;me.bio=$('#eb').value.trim();me.loc=$('#el').value.trim()||'Hyderabad';closeS();toast('Profile updated');render()}
+const TX=[{t:'FitNest group workout',a:120,s:'Pending',d:'17 Nov',k:'trophy'},{t:'Chai Point photo post',a:150,s:'Completed',d:'14 Nov',k:'cam'},{t:'CineMax rating',a:90,s:'Completed',d:'12 Nov',k:'film'},{t:'Brew & Co cafe review',a:75,s:'Completed',d:'8 Nov',k:'food'},{t:'BookBarn reading challenge',a:30,s:'Completed',d:'5 Nov',k:'book'},{t:'Withdrawal to UPI',a:-150,s:'Withdrawn',d:'3 Nov',k:'send'},{t:'Welcome bonus',a:50,s:'Completed',d:'1 Nov',k:'gift'}];
+function walletPage(){const f=S.wf,L=TX.filter(t=>f==='All'||(f==='Credited'&&t.a>0&&t.s==='Completed')||(f==='Pending'&&t.s==='Pending')||(f==='Withdrawn'&&t.a<0));
+ return `<div class="row"><button class="ib glass" aria-label="Back" onclick="location.hash='profile'">${I('left')}</button><h2 class="grow" style="margin:0">Wallet</h2></div><div class="wal rise mt"><div style="opacity:.8">Available balance</div><b>₹245.00</b><div class="row mt" style="justify-content:space-between;font-size:.85rem;opacity:.9"><span>Pending ₹120</span><span>Lifetime ₹395</span></div></div>
+ <div class="acts"><button class="btn" onclick="wd()">${I('send','sm')}Withdraw</button><button class="btn sec" onclick="location.hash='earn'">${I('coin','sm')}Earn more</button></div>
+ <div class="card glass row mt">${I('lock')}<div class="grow"><b>Payout method</b><div class="sub">UPI or bank transfer. Not connected in demo. Minimum ₹100.</div></div></div>
+ <div class="chips">${['All','Credited','Pending','Withdrawn'].map(k=>`<button class="chip glass ${f===k?'on':''}" onclick="S.wf='${k}';render()">${k}</button>`).join('')}</div>
+ ${L.length?L.map((t,i)=>`<div class="nt glass rise" style="--i:${i}"><div class="av" style="${grad(i+2)};border-radius:14px">${I(t.k)}</div><div class="grow"><b>${t.t}</b><div class="sub">${t.d} · ${t.s}</div></div><b style="color:${t.a>0?'var(--pk)':'var(--tx)'}">${t.a>0?'+':'−'}₹${Math.abs(t.a)}</b></div>`).join(''):`<div class="card glass center">${I('coin','lg')}<h3 class="mt">No transactions</h3><p class="sub">Nothing in this view yet.</p></div>`}<p class="sub center">Demo rupees. Real balances are set by the server only.</p>`}
+function hist(){location.hash='wallet'}
+function wd(){sheet(`<h3>Withdraw</h3><p class="sub">Minimum ₹100. Available ₹245.</p><label for="wa">Amount (₹)</label><input id="wa" type="number" inputmode="numeric" min="100" max="245"><label for="wu">UPI ID</label><input id="wu" placeholder="name@bank"><div class="err" id="we" role="alert"></div><div class="acts mt"><button class="btn sec" onclick="closeS()">Cancel</button><button class="btn" onclick="wdGo()">Review</button></div>`)}
+function wdGo(){const a=+$('#wa').value,u=$('#wu').value.trim(),e=$('#we');if(!(a>=100&&a<=245))return e.textContent='Enter an amount between ₹100 and ₹245.';if(!/^[a-z0-9._-]{2,}@[a-z]{2,}$/i.test(u))return e.textContent='Enter a valid UPI ID.';sheet(`<h3>Review</h3><p>Withdraw ₹${a} to ${u}</p><p class="sub mt">Demo mode: no money is moved. Real payouts need a backend and an authorised payment provider.</p><button class="btn mt" style="width:100%" onclick="closeS()">Got it</button>`)}
+function nDel(id){const e=$('#n'+id);e&&e.classList.add('out');setTimeout(()=>{N=N.filter(n=>n.id!==id);render()},350)}
+applyTheme();render();
+</script>
+</body>
+</html>
